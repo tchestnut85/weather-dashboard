@@ -1,0 +1,24 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: black;
+    --secondary: slategray;
+    --container: lightgray;
+    --background: ghostwhite;
+}
+
+.header {
+    display: flex;
+    background-color: var(--secondary);
+    justify-content: center;
+    text-align: center;
+}
+
+.heading {
+    color: var(--primary);
+    font-family: "Kumbh sans";
+    font-weight: lighter;
+    margin-top: 10px;
+}
