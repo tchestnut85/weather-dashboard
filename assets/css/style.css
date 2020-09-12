@@ -7,6 +7,8 @@
     --secondary: slategray;
     --container: lightgray;
     --background: ghostwhite;
+    --heading-font: "Kumbh Sans", sans-serif;
+    --text-font: "Montserrat", sans-serif;
 }
 
 .header {
@@ -18,7 +20,19 @@
 
 .heading {
     color: var(--primary);
-    font-family: "Kumbh sans";
-    font-weight: lighter;
+    font-family: var(--heading-font);
     margin-top: 10px;
+}
+
+.main-content {
+    border: solid 2px;
+    /* margin: 0 auto; */
+}
+
+.result-wrapper {
+    border: solid 2px;
+}
+
+.result-wrap-style {
+    border: solid 2px;
 }
