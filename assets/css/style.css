@@ -29,6 +29,12 @@
     /* margin: 0 auto; */
 }
 
+.search-label {
+    font-family: var(--text-font);
+    font-weight: bold;
+    margin-top: 5px;
+}
+
 .result-wrapper {
     border: solid 2px;
 }

@@ -21,13 +21,13 @@
     <main class="main-content container">
         <div class="content-wrapper row">
             <section id="search-wrapper" class="search-wrap-style col-3">
-                <form id="search-form">
-                    <label id="search-label" for="search-box">Search for a City:</label>
-                    <input type="text" id="search-bar" name="search-box" />
-                    <button type="button" form="search-form" id="search-button"><i class="fas fa-search"></i></button>
+                <form id="search-form" class="text-center text-wrap">
+                    <label class="search-label" for="search-box" >Search for a City's Weather</label>
+                    <input type="text" id="search-bar" name="search-box" class="form-control"/>
+                    <button type="submit" form="search-form" id="search-button" class="btn btn-primary btn-block"><i class="fas fa-search"></i></button>
                 </form>
                 <ul id="search-history">
-
+                    <!-- use localstorage to save and display recent cities searched -->
                 </ul>
             </section>
             <section id="result-wrapper" class="result-wrap-style col-9">
@@ -35,7 +35,7 @@
                     <!-- use javascript to append current weather here -->
                 </div>
                 <div id="forecast-result" class="forecast-style">
-                    <ul>Test
+                    <ul>
                     <!-- use javascript to append 5 day forecasted weather here -->
                     </ul>
                 </div>
