@@ -21,8 +21,11 @@
     <main class="main-content container">
         <div class="content-wrapper row">
             <section id="search-wrapper" class="search-wrap-style col-3">
-                <label id="search-label" for="search-box">Search for a City:</label>
-                <input type="text" id="search-bar" name="search-box" /><i class="fas fa-search"></i>
+                <form id="search-form">
+                    <label id="search-label" for="search-box">Search for a City:</label>
+                    <input type="text" id="search-bar" name="search-box" />
+                    <button type="button" form="search-form" id="search-button"><i class="fas fa-search"></i></button>
+                </form>
                 <ul id="search-history">
 
                 </ul>
