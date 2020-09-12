@@ -24,10 +24,10 @@
     margin-top: 10px;
 }
 
-.main-content {
+/* .main-content {
     border: solid 2px;
-    /* margin: 0 auto; */
-}
+    margin: 0 auto;
+} */
 
 .search-label {
     font-family: var(--text-font);
@@ -35,10 +35,18 @@
     margin-top: 5px;
 }
 
+.text-input {
+    margin-bottom: 5px;
+}
+
+.icon {
+    width: 100px;
+    height: 100px;
+}
 .result-wrapper {
     border: solid 2px;
 }
 
-.result-wrap-style {
+/* .result-wrap-style {
     border: solid 2px;
-}
+} */

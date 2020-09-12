@@ -15,36 +15,44 @@
 </head>
 
 <body>
+
     <header class="header">
         <h1 class="heading display-4">Weather Dashboard</h1>
     </header>
+
     <main class="main-content container">
+
         <div class="content-wrapper row">
-            <section id="search-wrapper" class="search-wrap-style col-3">
+
+            <section id="search-wrapper" class="search-wrap-style card col-3">
+                <!-- form for searching a city -->
                 <form id="search-form" class="text-center text-wrap">
                     <label class="search-label" for="search-box" >Search for a City's Weather</label>
-                    <input type="text" id="search-bar" name="search-box" class="form-control"/>
+                    <input type="text" id="search-bar" name="search-box" class="form-control text-input"/>
                     <button type="submit" form="search-form" id="search-button" class="btn btn-primary btn-block"><i class="fas fa-search"></i></button>
                 </form>
-                <ul id="search-history">
-                    <!-- use localstorage to save and display recent cities searched -->
+                <ul id="search-history" class="card-body">
+                    <!-- save and display recent cities searched -->
                 </ul>
             </section>
-            <section id="result-wrapper" class="result-wrap-style col-9">
-                <div id="current-result" class="current-style">
-                    <!-- use javascript to append current weather here -->
+
+            <section id="result-wrapper" class="result-wrap-style col-9 card">
+                <div id="current-result" class="current-style card-body">
+                    <!-- current weather here -->
                 </div>
                 <div id="forecast-result" class="forecast-style">
                     <ul>
-                    <!-- use javascript to append 5 day forecasted weather here -->
+                    <!-- 5 day forecasted weather here -->
                     </ul>
                 </div>
             </section>
+
         </div>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
         integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
         crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js" integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg==" crossorigin="anonymous"></script>
     <script src="./assets/js/script.js"></script>
 </body>
 
