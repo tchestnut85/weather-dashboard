@@ -6,7 +6,7 @@ var cityNameEl = document.createElement("span");
 var currentTempEl = document.createElement("span");
 var humidityEl = document.createElement("span");
 var windEl = document.createElement("span");
-var uvIndexEl = document.createElement("span");
+var uvIndexEl = document.createElement("h4");
 
 
 // function to fetch weather api - city is received from searchEvent function as searchValue 
@@ -46,17 +46,21 @@ var weatherRequest = function(city) {
         })
         .then(function(uvResponse) {
             // display UV index
-            uvIndexEl.innerHTML = "<h4>UV Index: " + uvResponse.value + "</h4>";
+            var uvValue = uvResponse.value;
+            var uvValueSpan = document.createElement("span");
+            // make an h4 tag then a seperate span tag for text to go into and edit class for span at if statement
+            uvIndexEl.innerHTML = "<h4>UV Index: " + uvValue + "</h4>";
             responseContainer.appendChild(uvIndexEl);
-            console.log(uvResponse);
-            console.log(uvResponse.value);
+            uvValueSpan.innerHTML = uvValue;
         
-            if (uvResponse.value <= 2) {
-                uvIndexEl.addClass("btn-success");
-            } else if (uvResponse.value === 3 || uvResponse.value === 4 || uvResponse.value === 5) {
-                uvIndexEl.addClass("btn-warning");
-            } else if (uvResponse.value >= 6) {
-                uvIndexEl.addClass("btn-danger");
+
+
+            if (uvValue <= 2) {
+                uvValueSpan.addClass("bg-success");
+            } else if (uvValue === 3 || uvValue === 4 || uvValue === 5) {
+                uvValueSpan.addClass("bg-warning");
+            } else if (uvValue >= 6) {
+                uvValueSpan.addClass("bg-danger");
             }
         })
         // handle any errors
