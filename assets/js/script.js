@@ -2,10 +2,11 @@ var searchHandler = document.querySelector("#search-form");
 var searchBar = document.querySelector("#search-bar");
 var responseContainer = document.querySelector("#current-result");
 var cityNameEl = document.createElement("span");
+var currentTempEl = document.createElement("span");
 
-// Make function to get weather api
-var weatherRequest = function (city) {
-    var weatherApi = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=c83c5006fffeb4aa44a34ffd6a27f135";
+// function to fetch weather api - city is received from searchEvent function as searchValue 
+var weatherRequest = function(city) {
+    var weatherApi = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=c83c5006fffeb4aa44a34ffd6a27f135";
     // fetch the response
     fetch(weatherApi)
         .then(function (response) {
@@ -14,15 +15,16 @@ var weatherRequest = function (city) {
         .then(function (response) {
             // log the fetch response
             console.log(response);
-            // grab the id of the element the weather data will be displayed
-            // create element for the weather response
-            
-            // set the element's attribute to the json data path
-            // cityNameEl.setAttribute("src", response.name);
+
+            // create element for the city name response   
             cityNameEl.innerHTML = "<h2>" + response.name + "</h2>";
             console.log(response.name);
-            // append the element to html
             responseContainer.appendChild(cityNameEl);
+
+            // create element to display the current temperature
+            currentTempEl.innerHTML = "<h3>Current Temperature: " + response.main.temp + " &#176F</h3>";
+            console.log(response.name);
+            responseContainer.appendChild(currentTempEl);
 
             // handle any errors
             // .catch(function(error) {
@@ -32,7 +34,7 @@ var weatherRequest = function (city) {
         });
 };
 
-var searchEvent = function (event) {
+var searchEvent = function(event) {
     event.preventDefault();
     // clicking search button submits value and calls weatherRequest function
     var searchValue = searchBar.value.trim();
@@ -53,9 +55,6 @@ var searchEvent = function (event) {
 // remove previously searched weather info
 var removePrevious = function() {
     cityNameEl.remove();
-    
 };
 
 searchHandler.addEventListener("submit", searchEvent);
-
-// weatherRequest();
