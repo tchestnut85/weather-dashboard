@@ -46,21 +46,26 @@ var weatherRequest = function (city) {
             responseContainer.appendChild(windEl);
 
             // fetch UV Index
-            return fetch("http://api.openweathermap.org/data/2.5/uvi?appid=c83c5006fffeb4aa44a34ffd6a27f135&lat=" + response.coord.lat + "&lon=" + response.coord.lon);
+            return fetch("https://api.openweathermap.org/data/2.5/uvi?appid=c83c5006fffeb4aa44a34ffd6a27f135&lat=" + response.coord.lat + "&lon=" + response.coord.lon);
         })
         .then(function (uvFetch) {
             return uvFetch.json();
         })
         .then(function (uvResponse) {
-            // display UV index
-            var uvValue = uvResponse.value;
+            // create div to contain UV index
+            var uvIndexContainer = document.createElement("div");
+            uvIndexContainer.setAttribute("id", "uv-value");
+            uvIndexContainer.classList = "card-text uv-class";
+            responseContainer.appendChild(uvIndexContainer);
 
+            // set uvValue
+            var uvValue = uvResponse.value;
             uvIndexEl.innerHTML = "UV Index: ";
 
             uvValueDisplay.setAttribute("id", "uv-index");
             uvValueDisplay.innerHTML = uvValue;
-            responseContainer.appendChild(uvIndexEl);
-            responseContainer.appendChild(uvValueDisplay);
+            uvIndexContainer.appendChild(uvIndexEl);
+            uvIndexContainer.appendChild(uvValueDisplay);
 
             if (uvResponse.value > 7) {
                 document.querySelector("#uv-index").classList = "uv-result rounded bg-danger";
@@ -69,52 +74,79 @@ var weatherRequest = function (city) {
             } else if (uvResponse.value <= 2) {
                 document.querySelector("#uv-index").classList = "uv-result rounded bg-success";
             }
-        })
-};
 
-var forecastRequest = function (city) {
-    // fetch 5-day forecast
-    var forecastApi = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=c83c5006fffeb4aa44a34ffd6a27f135";
-
-    fetch(forecastApi)
-        .then(function (response) {
-            return response.json();
+            return fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + uvResponse.lat + "&lon=" + uvResponse.lon + "&appid=c83c5006fffeb4aa44a34ffd6a27f135&units=imperial");
         })
-        .then(function (response) {
+        .then(function(forecastResponse) {
+            return forecastResponse.json();
+        })
+        .then(function (forecastResponse) {
             // log the fetch response
-            console.log("forecast test", response);
+            console.log("forecast test", forecastResponse);
 
-            // use a for loop to display arrays 0-4 and get required data to append to forecastEl div
-            // need to make a card div loop
-            // for (var i = 1; i < 6; i++) {
-            // forecast date
+            // for loop to display 5 day forecast
+            for (var i = 1; i < 6; i++) {
             var forecastEl = document.createElement("div");
-            forecastEl.classList = "card-body rounded-lg border-dark bg-info"
+            forecastEl.classList = "card-body rounded-lg border-dark bg-info";
             forecastContainer.appendChild(forecastEl);
 
+            // display date 
             var dateDiv = document.createElement("div");
             dateDiv.classList = "card-title";
-            dateDiv.innerHTML = "<h5>" + (moment().format("ll")) + "</h5>";
+            var forecastDate = moment.utc(forecastResponse.daily[i].dt * 1000).format("MM/DD/YYYY");
+            console.log(forecastDate);
+            dateDiv.innerHTML = "<h5>" + forecastDate + "</h5>";
             forecastEl.appendChild(dateDiv);
 
             // weather icon
             var iconDiv = document.createElement("div");
-            iconDiv.innerHTML = "<img src='http://openweathermap.org/img/w/" + response.list[1].weather[0].icon + ".png' alt=Weather forecast icon/>";
+            iconDiv.innerHTML = "<img src='http://openweathermap.org/img/w/" + forecastResponse.daily[i].weather[0].icon  + ".png' alt=Current weather icon/>";
             forecastEl.appendChild(iconDiv);
 
-            // display temperature forecast
+            // display day temperature forecast
             var tempDiv = document.createElement("div");
             tempDiv.classList = "card-text";
-            tempDiv.innerHTML = "<h5>Temp: " + response.list[1].main.humidity + "&#176F</h5>";
+            tempDiv.innerHTML = "<span>Day Temp: " + forecastResponse.daily[i].temp.day + "&#176F</span><br>" + "<span>Night Temp: " + forecastResponse.daily[i].temp.night + " &#176F</span>";
             forecastEl.appendChild(tempDiv);
 
-            // Humidity: %
-            var humidDiv = document.createElement("div");
-            humidDiv.classList = "card-text";
-            humidDiv.innerHTML = "<h5>Humidity: " + response.list[1].main.temp + "%</h5>";
-            forecastEl.appendChild(humidDiv);
+            }
+            
+            // removed (moment().format("ll")) from dateDiv.innerHTML
+
+            // use a for loop to display arrays 0-4 and get required data to append to forecastEl div
+            // need to make a card div loop
+            // for (var i = 1; i < 6; i++) {
+            // // forecast date
+            // var forecastEl = document.createElement("div");
+            // forecastEl.classList = "card-body rounded-lg border-dark bg-info"
+            // forecastContainer.appendChild(forecastEl);
+
+            // var dateDiv = document.createElement("div");
+            // dateDiv.classList = "card-title";
+            // dateDiv.innerHTML = "<h5>" + response.list[i].dt_txt + "</h5>";
+            // forecastEl.appendChild(dateDiv);
+            // // removed (moment().format("ll")) from dateDiv.innerHTML
+
+            // // weather icon
+            // var iconDiv = document.createElement("div");
+            // iconDiv.innerHTML = "<img src='http://openweathermap.org/img/w/" 
+            // + response.list[i].weather[0].icon + ".png' alt=Weather forecast icon/>";
+            // forecastEl.appendChild(iconDiv);
+
+            // // display temperature forecast
+            // var tempDiv = document.createElement("div");
+            // tempDiv.classList = "card-text";
+            // tempDiv.innerHTML = "<h5>Temp: " + response.list[1].main.humidity + "&#176F</h5>";
+            // forecastEl.appendChild(tempDiv);
+
+            // // Humidity: %
+            // var humidDiv = document.createElement("div");
+            // humidDiv.classList = "card-text";
+            // humidDiv.innerHTML = "<h5>Humidity: " + response.list[1].main.temp + "%</h5>";
+            // forecastEl.appendChild(humidDiv);
 
             // };
+
         })
 };
 
@@ -122,13 +154,18 @@ var searchEvent = function (event) {
     event.preventDefault();
     // clicking search button submits value and calls weatherRequest function
     var searchValue = searchBar.value.trim();
+
+    
     if (searchValue) {
         weatherRequest(searchValue);
-        forecastRequest(searchValue);
+        // forecastRequest(searchValue);
     } else {
         //if search is empty, throw an alert. CHANGE TO A MODAL LATER
         alert("Please enter a city to see its current weather.");
     }
+
+    // save searched city to localStorage
+
 
     // clear search bar after clicking search button
     document.querySelector("#search-bar").value = "";
