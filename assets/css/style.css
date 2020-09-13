@@ -53,10 +53,18 @@
     align-items: center;
 }
 
+
 .uv-result {
     font-size: 25px;
     margin-left: 10px;
     padding: 2px 10px;
     color: white;
+}
 
+.margin {
+    margin-right: 5px;
+}
+.forecast-class {
+    display: flex;
+    justify-content: space-between;
 }

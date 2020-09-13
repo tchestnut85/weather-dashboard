@@ -31,9 +31,9 @@
                     <input type="text" id="search-bar" name="search-box" class="form-control text-input"/>
                     <button type="submit" form="search-form" id="search-button" class="btn btn-primary btn-block"><i class="fas fa-search"></i></button>
                 </form>
-                <ul id="search-history" class="card-body">
+                <div id="search-history" class="card-body">
                     <!-- save and display recent cities searched -->
-                </ul>
+                </div>
             </section>
 
             <!-- results section -->
@@ -47,10 +47,9 @@
                 <!-- 5 day forecast section -->
                 <section>
                     <!-- will need to make line 50 div a card, line 51 div a card-body and javascript created div a card-body-->
-                    <div id="forecast-wrapper" class="card-deck">
-                        <div id="forecast-result" class="forecast-style card bg-light border-secondary">
+                    <div id="forecast-wrapper" class="card">
+                        <div id="forecast-result" class="forecast-class card-body bg-light border-secondary">
                             <!-- append 5 day forecasted weather here -->
-                            
                         </div>
                     </div>
                 </section>
