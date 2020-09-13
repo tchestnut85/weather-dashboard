@@ -43,8 +43,17 @@
     width: 100px;
     height: 100px;
 }
+
 .result-wrapper {
     border: solid 2px;
+}
+
+.uv-result {
+    width: 25px;
+    font-size: 24px;
+    padding: 3px 10px;
+    color: white;
+
 }
 
 /* .result-wrap-style {

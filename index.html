@@ -36,15 +36,24 @@
                 </ul>
             </section>
 
-            <section id="result-wrapper" class="result-wrap-style col-9 card">
-                <div id="current-result" class="current-style card-body">
-                    <!-- current weather here -->
+            <!-- results section -->
+            <section id="result-wrapper" class="col-9 card">
+
+                <!-- current forecast section -->
+                <div id="current-result" class="current-style card-body bg-light border-secondary">
+                    <!-- append current weather here -->
                 </div>
-                <div id="forecast-result" class="forecast-style">
-                    <ul>
-                    <!-- 5 day forecasted weather here -->
-                    </ul>
-                </div>
+                
+                <!-- 5 day forecast section -->
+                <section>
+                    <!-- will need to make line 50 div a card, line 51 div a card-body and javascript created div a card-body-->
+                    <div id="forecast-wrapper" class="card-deck">
+                        <div id="forecast-result" class="forecast-style card bg-light border-secondary">
+                            <!-- append 5 day forecasted weather here -->
+                            
+                        </div>
+                    </div>
+                </section>
             </section>
 
         </div>
