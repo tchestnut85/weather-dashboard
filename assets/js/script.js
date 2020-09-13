@@ -106,8 +106,14 @@ var weatherRequest = function (city) {
             // display day temperature forecast
             var tempDiv = document.createElement("div");
             tempDiv.classList = "card-text";
-            tempDiv.innerHTML = "<span>Day Temp: " + forecastResponse.daily[i].temp.day + "&#176F</span><br>" + "<span>Night Temp: " + forecastResponse.daily[i].temp.night + " &#176F</span>";
+            tempDiv.innerHTML = "<h6>Day Temp: " + forecastResponse.daily[i].temp.day + "&#176F</h6>" + "<h6>Night Temp: " + forecastResponse.daily[i].temp.night + " &#176F</h6>";
             forecastEl.appendChild(tempDiv);
+
+             // display humidity forecast
+            var humidDiv = document.createElement("div");
+            humidDiv.classList = "card-text";
+            humidDiv.innerHTML = "<h6>Humidity: " + forecastResponse.daily[i].humidity + "%</h6>";
+            forecastEl.appendChild(humidDiv);
 
             }
             
