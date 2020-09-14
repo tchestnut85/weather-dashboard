@@ -8,16 +8,17 @@ var cityNameEl = document.createElement("span");
 var currentTempEl = document.createElement("span");
 var humidityEl = document.createElement("span");
 var windEl = document.createElement("span");
+var uvIndexContainer = document.createElement("div");
 var uvIndexEl = document.createElement("h4");
 var uvValueDisplay = document.createElement("span");
 
 // 5 day forecast variables
 var forecastContainer = document.querySelector("#forecast-result");
 
-// localstorage variables
 var searchWrapperEl = document.querySelector("#search-wrapper")
 var searchHistoryDiv = document.querySelector("#search-history");
-// var cityArray = ["1", "2", "3", "4", "5"];
+var cityCount = 1;
+// var citiesArray = [cityOne, cityTwo, cityThree, cityFour, cityFive]
 
 // function to fetch weather api - city is received from searchEvent function as searchValue 
 var weatherRequest = function (city) {
@@ -56,7 +57,6 @@ var weatherRequest = function (city) {
         })
         .then(function (uvResponse) {
             // create div to contain UV index
-            var uvIndexContainer = document.createElement("div");
             uvIndexContainer.setAttribute("id", "uv-value");
             uvIndexContainer.classList = "card-body uv-class";
             responseContainer.appendChild(uvIndexContainer);
@@ -93,8 +93,7 @@ var weatherRequest = function (city) {
                 // display date 
                 var dateDiv = document.createElement("div");
                 dateDiv.classList = "card-title";
-                var forecastDate = moment.utc(forecastResponse.daily[i].dt * 1000).format("MM/DD/YYYY");
-                console.log(forecastDate);
+                var forecastDate = moment.utc(forecastResponse.daily[i].dt * 1000).format("dddd, MMM DD");
                 dateDiv.innerHTML = "<h5>" + forecastDate + "</h5>";
                 forecastEl.appendChild(dateDiv);
 
@@ -119,10 +118,13 @@ var weatherRequest = function (city) {
         })
 };
 
+// localstorage variables
+// var searchValue = searchBar.value.trim().toUpperCase();
+
 var searchEvent = function (event) {
     event.preventDefault();
     // clicking search button submits value and calls weatherRequest function
-    var searchValue = searchBar.value.trim();
+    var searchValue = searchBar.value.trim().toUpperCase();
 
     if (searchValue) {
         weatherRequest(searchValue);
@@ -131,40 +133,94 @@ var searchEvent = function (event) {
         alert("Please enter a city to see its current weather.");
     }
 
+    storeHistory();
+};
+
+function storeHistory() {
+    // variables to store storage keys for if statements
+    var cityOne = localStorage.getItem("city-1");
+    var cityTwo = localStorage.getItem("city-2");
+    var cityThree = localStorage.getItem("city-3");
+    var cityFour = localStorage.getItem("city-4");
+    var cityFive = localStorage.getItem("city-5");
+
+    // check if localstorage city-1 through city-5 exist
+    if (cityOne === null || cityTwo === null || cityThree === null || cityFour === null || cityFive === null) {
+        var searchValue = searchBar.value.trim().toUpperCase();
+        var citySearch = document.createElement("button");
+        console.log(searchValue);
+        citySearch.textContent = searchValue;
+        citySearch.classList = "btn btn-info btn-block";
+        citySearch.setAttribute("data-city", searchValue);
+        citySearch.setAttribute("type", "submit");
+        citySearch.setAttribute("id", "city-" + cityCount++);
+        searchHistoryDiv.prepend(citySearch);
+        storageValue = citySearch.dataset.city;
+        cityIdValue = citySearch.id;
+        console.log("ID", cityIdValue);
+        console.log("DATA", storageValue);
+        localStorage.setItem(cityIdValue, storageValue);
+
+        // if any exist/are true, set localStorage and call loadHistory function
+    } else if (cityOne || cityTwo || cityThree || cityFour || cityFive) {
+        var searchValue = searchBar.value.trim().toUpperCase();
+        console.log(searchValue);
+        var citySearch = document.createElement("button");
+        citySearch.textContent = searchValue;
+        citySearch.classList = "btn btn-info btn-block";
+        citySearch.setAttribute("data-city", searchValue);
+        citySearch.setAttribute("type", "submit");
+        citySearch.setAttribute("id", "city-" + cityCount++);
+        searchHistoryDiv.prepend(citySearch);
+        storageValue = citySearch.dataset.city;
+        cityIdValue = citySearch.id;
+        console.log("ID", cityIdValue);
+        console.log("DATA", storageValue);
+        localStorage.setItem(cityIdValue, storageValue);
+
+        loadHistory();
+    }
+
     // clear search bar after clicking search button
     document.querySelector("#search-bar").value = "";
+
     // call function to remove previously searched weather
     removePrevious();
 };
 
 
-function saveHistory() {
-    var searchValue = searchBar.value.trim();
-    localStorage.setItem("cities", searchValue);
-    console.log(searchValue);
-    
-    var citySearch = document.createElement("button");
-    citySearch.textContent = searchValue;
-    citySearch.classList = "btn btn-info btn-block";
-    citySearch.setAttribute("data-city", searchValue);
-    citySearch.setAttribute("type", "submit");
-    searchHistoryDiv.prepend(citySearch);
-    
-    var value = JSON.parse(localStorage.getItem("text-area-" + hour));
-    $("#text-area-" + hour).val(value);
+function loadHistory() {
+    var cityOne = localStorage.getItem("city-1");
+    var cityTwo = localStorage.getItem("city-2");
+    var cityThree = localStorage.getItem("city-3");
+    var cityFour = localStorage.getItem("city-4");
+    var cityFive = localStorage.getItem("city-5");
+    var citiesArray = [cityOne, cityTwo, cityThree, cityFour, cityFive];
+
+    for (var i = 0; i < citiesArray.length; i++) {
+        // create buttons using localstorage values
+        if (citiesArray[i] === null) {
+        
+            var citySearch = document.createElement("button");
+            citySearch.textContent = localStorage.getItem("city-" + [i]);
+            citySearch.classList = "btn btn-info btn-block";
+            citySearch.setAttribute("data-city", [i]);
+            citySearch.setAttribute("type", "submit");
+            citySearch.setAttribute("id", "city-" + [i]);
+            searchHistoryDiv.prepend(citySearch);
+        } else if (cityOne === null || cityTwo === null || cityThree === null || cityFour === null || cityFive === null) {
+            return;
+        }
+    }
 };
-
-// function loadHistory() {
-//     // for (var i = 0; i < cityArray.length; i++) {
-//     // var cityData = hourArr[i];
-
-// };
 
 // remove previously searched weather info
 var removePrevious = function () {
     cityNameEl.remove();
-    uvValueDisplay.remove();
+    uvIndexContainer.remove();
+    // forecastContainer.remove();
 };
 
 searchHandler.addEventListener("submit", searchEvent);
-searchHandler.addEventListener("submit", saveHistory);
+
+loadHistory();

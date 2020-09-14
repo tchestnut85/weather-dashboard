@@ -24,19 +24,24 @@
     margin-top: 10px;
 }
 
-/* .main-content {
-    border: solid 2px;
-    margin: 0 auto;
-} */
-
 .search-label {
     font-family: var(--text-font);
     font-weight: bold;
     margin-top: 5px;
 }
 
+.search-wrap-style {
+    background-color: lightsteelblue;
+}
+
 .text-input {
     margin-bottom: 5px;
+}
+
+.current-style {
+    background-color: lightblue;
+    margin-bottom: 8px;
+    border-radius: 5px;
 }
 
 .icon {
@@ -53,7 +58,6 @@
     align-items: center;
 }
 
-
 .uv-result {
     font-size: 25px;
     margin-left: 10px;
@@ -64,7 +68,9 @@
 .margin {
     margin-right: 5px;
 }
+
 .forecast-class {
     display: flex;
     justify-content: space-between;
+    background-color: lightblue;
 }
