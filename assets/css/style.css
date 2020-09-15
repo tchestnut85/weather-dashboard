@@ -11,6 +11,18 @@
     --text-font: "Montserrat", sans-serif;
 }
 
+.primary-text {
+    font-family: var(--heading-font)
+}
+
+.secondary-text {
+    font-family: var(--text-font);
+}
+
+.secondary-background {
+    background-color: var(--secondary)
+}
+
 .header {
     display: flex;
     background-color: var(--secondary);
@@ -31,7 +43,7 @@
 }
 
 .search-wrap-style {
-    background-color: lightsteelblue;
+    background-color: lightblue;
 }
 
 .text-input {
@@ -39,14 +51,15 @@
 }
 
 .current-style {
+    text-align: center;
     background-color: lightblue;
     margin-bottom: 8px;
     border-radius: 5px;
 }
 
 .icon {
-    width: 75px;
-    height: 75px;
+    width: 100px;
+    height: 100px;
 }
 
 .result-wrapper {
@@ -55,6 +68,7 @@
 
 .uv-class {
     display: flex;
+    justify-content: center;
     align-items: center;
 }
 
@@ -65,12 +79,46 @@
     color: white;
 }
 
-.margin {
+.forecast-card {
     margin-right: 5px;
+    text-align: center;
 }
 
 .forecast-class {
     display: flex;
     justify-content: space-between;
     background-color: lightblue;
+}
+
+.forecast-icon {
+    width: 75px;
+    height: 75px;
+}
+
+@media screen and (max-width: 1199px) {
+    .heading {
+        font-size: 2rem;
+    }
+
+    .secondary-text {
+        font-size: 1.5rem;
+    }
+
+    .forecast-class {
+        flex-direction: column;
+        font-size: 
+    }
+
+    .forecast-card {
+        margin-bottom: 2px;
+        text-align: center;
+    }
+
+    .forecast-card h5 {
+        font-size: 1.50rem;
+    } 
+
+    .forecast-card h6 {
+        font-size: 1.25rem;
+    }
 }
