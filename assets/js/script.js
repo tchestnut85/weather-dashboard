@@ -30,23 +30,24 @@ var weatherRequest = function (city) {
         })
         .then(function (response) {
             // log the fetch response
-            // console.log(response);
+            console.log(response);
 
             // create element for the city name response   
-            cityNameEl.innerHTML = "<h2>" + response.name + " (" + date + ") " + "<img class='icon' src='http://openweathermap.org/img/w/" + response.weather[0].icon + ".png' alt=Current weather icon/></h2>";
-            // console.log(response.name + " " + response.timezone);
+            cityNameEl.innerHTML = "<h2 class='secondary-text'>Current Weather for <span class='font-weight-bold'>" + response.name 
+            + "</span></h2><br><img class='icon' src='http://openweathermap.org/img/w/" + response.weather[0].icon 
+            + ".png' alt=Current weather icon/><br><br><h2 class='font-weight-bold secondary-text'>" + date + "</h2><br>";
             responseContainer.appendChild(cityNameEl);
 
             // create element to display the current temperature
-            currentTempEl.innerHTML = "<h3>Current Temperature: " + response.main.temp + " &#176F</h3>";
+            currentTempEl.innerHTML = "<h3 class='secondary-text'>Current Temperature:<span class='font-weight-bold'>" + " " + response.main.temp + "&#176F</span></h3><br>";
             responseContainer.appendChild(currentTempEl);
 
             // create element to display humidity
-            humidityEl.innerHTML = "<h4>Humidity: " + response.main.humidity + "%</h4>";
+            humidityEl.innerHTML = "<h4 class='secondary-text'>Humidity:<span class='font-weight-bold'>" + " " + response.main.humidity + "%</span></h4><br>";
             responseContainer.appendChild(humidityEl);
 
             // create element to display wind speed
-            windEl.innerHTML = "<h4>Wind Speed: " + response.wind.speed + "MPH</h4>";
+            windEl.innerHTML = "<h4 class='secondary-text'>Wind Speed:<span class='font-weight-bold'>" + " " + response.wind.speed + "MPH</span></h4>";
             responseContainer.appendChild(windEl);
 
             // fetch UV Index
@@ -58,7 +59,7 @@ var weatherRequest = function (city) {
         .then(function (uvResponse) {
             // create div to contain UV index
             uvIndexContainer.setAttribute("id", "uv-value");
-            uvIndexContainer.classList = "card-body uv-class";
+            uvIndexContainer.classList = "secondary-text card-body uv-class";
             responseContainer.appendChild(uvIndexContainer);
 
             // set uvValue
@@ -87,33 +88,32 @@ var weatherRequest = function (city) {
             // for loop to display 5 day forecast
             for (var i = 1; i < 6; i++) {
                 var forecastEl = document.createElement("div");
-                forecastEl.classList = "margin card-body rounded-lg border-dark bg-info";
+                forecastEl.classList = "forecast-card card-body rounded-lg border-dark secondary-background";
                 forecastContainer.appendChild(forecastEl);
 
                 // display date 
                 var dateDiv = document.createElement("div");
-                dateDiv.classList = "card-title";
+                dateDiv.classList = "secondary-text card-title";
                 var forecastDate = moment.utc(forecastResponse.daily[i].dt * 1000).format("dddd, MMM DD");
-                dateDiv.innerHTML = "<h5>" + forecastDate + "</h5>";
+                dateDiv.innerHTML = "<h5 class='font-weight-bold'>" + forecastDate + "</h5>";
                 forecastEl.appendChild(dateDiv);
 
                 // weather icon
                 var iconDiv = document.createElement("div");
-                iconDiv.innerHTML = "<img src='http://openweathermap.org/img/w/" + forecastResponse.daily[i].weather[0].icon + ".png' alt=Current weather icon/>";
+                iconDiv.innerHTML = "<img src='http://openweathermap.org/img/w/" + forecastResponse.daily[i].weather[0].icon + ".png' class='forecast-icon' alt=Current weather icon/>";
                 forecastEl.appendChild(iconDiv);
 
                 // display day temperature forecast
                 var tempDiv = document.createElement("div");
-                tempDiv.classList = "card-text";
-                tempDiv.innerHTML = "<h6>Day Temp: " + forecastResponse.daily[i].temp.day + "&#176F</h6>" + "<h6>Night Temp: " + forecastResponse.daily[i].temp.night + " &#176F</h6>";
+                tempDiv.classList = "card-text secondary-text";
+                tempDiv.innerHTML = "<h6>Day Temp:<span class='font-weight-bold'>" + " " + forecastResponse.daily[i].temp.day + "&#176F</span></h6>" + "<h6>Night Temp:<span class='font-weight-bold'>" + " " + forecastResponse.daily[i].temp.night + " &#176F</span></h6>";
                 forecastEl.appendChild(tempDiv);
 
                 // display humidity forecast
                 var humidDiv = document.createElement("div");
-                humidDiv.classList = "card-text";
-                humidDiv.innerHTML = "<h6>Humidity: " + forecastResponse.daily[i].humidity + "%</h6>";
+                humidDiv.classList = "card-text secondary-text";
+                humidDiv.innerHTML = "<h6>Humidity:<span class='font-weight-bold'>" + " " + forecastResponse.daily[i].humidity + "%</span></h6>";
                 forecastEl.appendChild(humidDiv);
-
             }
         })
 };
