@@ -33,9 +33,9 @@ var weatherRequest = function (city) {
             console.log(response);
 
             // create element for the city name response   
-            cityNameEl.innerHTML = "<h2 class='secondary-text'>Current Weather for <span class='font-weight-bold'>" + response.name 
-            + "</span></h2><br><img class='icon' src='http://openweathermap.org/img/w/" + response.weather[0].icon 
-            + ".png' alt=Current weather icon/><br><br><h2 class='font-weight-bold secondary-text'>" + date + "</h2><br>";
+            cityNameEl.innerHTML = "<h2 class='secondary-text'>Current Weather for <span class='font-weight-bold'>" + response.name
+                + "</span></h2><br><img class='icon' src='http://openweathermap.org/img/w/" + response.weather[0].icon
+                + ".png' alt=Current weather icon/><br><br><h2 class='font-weight-bold secondary-text'>" + date + "</h2><br>";
             responseContainer.appendChild(cityNameEl);
 
             // create element to display the current temperature
@@ -118,9 +118,6 @@ var weatherRequest = function (city) {
         })
 };
 
-// localstorage variables
-// var searchValue = searchBar.value.trim().toUpperCase();
-
 var searchEvent = function (event) {
     event.preventDefault();
     // clicking search button submits value and calls weatherRequest function
@@ -132,54 +129,19 @@ var searchEvent = function (event) {
         //if search is empty, throw an alert. CHANGE TO A MODAL LATER
         alert("Please enter a city to see its current weather.");
     }
-
     storeHistory();
 };
 
 function storeHistory() {
     // variables to store storage keys for if statements
-    var cityOne = localStorage.getItem("city-1");
-    var cityTwo = localStorage.getItem("city-2");
-    var cityThree = localStorage.getItem("city-3");
-    var cityFour = localStorage.getItem("city-4");
-    var cityFive = localStorage.getItem("city-5");
 
-    // check if localstorage city-1 through city-5 exist
-    if (cityOne === null || cityTwo === null || cityThree === null || cityFour === null || cityFive === null) {
-        var searchValue = searchBar.value.trim().toUpperCase();
-        var citySearch = document.createElement("button");
-        console.log(searchValue);
-        citySearch.textContent = searchValue;
-        citySearch.classList = "btn btn-info btn-block";
-        citySearch.setAttribute("data-city", searchValue);
-        citySearch.setAttribute("type", "submit");
-        citySearch.setAttribute("id", "city-" + cityCount++);
-        searchHistoryDiv.prepend(citySearch);
-        storageValue = citySearch.dataset.city;
-        cityIdValue = citySearch.id;
-        console.log("ID", cityIdValue);
-        console.log("DATA", storageValue);
-        localStorage.setItem(cityIdValue, storageValue);
+    var userSearch = document.querySelector("#search-bar").value.trim().toUpperCase();
 
-        // if any exist/are true, set localStorage and call loadHistory function
-    } else if (cityOne || cityTwo || cityThree || cityFour || cityFive) {
-        var searchValue = searchBar.value.trim().toUpperCase();
-        console.log(searchValue);
-        var citySearch = document.createElement("button");
-        citySearch.textContent = searchValue;
-        citySearch.classList = "btn btn-info btn-block";
-        citySearch.setAttribute("data-city", searchValue);
-        citySearch.setAttribute("type", "submit");
-        citySearch.setAttribute("id", "city-" + cityCount++);
-        searchHistoryDiv.prepend(citySearch);
-        storageValue = citySearch.dataset.city;
-        cityIdValue = citySearch.id;
-        console.log("ID", cityIdValue);
-        console.log("DATA", storageValue);
-        localStorage.setItem(cityIdValue, storageValue);
+    var previousSearchCity = JSON.parse(localStorage.getItem("searchedCities")) || [];
 
-        loadHistory();
-    }
+    previousSearchCity.push(userSearch);
+
+    localStorage.setItem("searchedCities", JSON.stringify(previousSearchCity));
 
     // clear search bar after clicking search button
     document.querySelector("#search-bar").value = "";
@@ -188,29 +150,33 @@ function storeHistory() {
     removePrevious();
 };
 
-
 function loadHistory() {
-    var cityOne = localStorage.getItem("city-1");
-    var cityTwo = localStorage.getItem("city-2");
-    var cityThree = localStorage.getItem("city-3");
-    var cityFour = localStorage.getItem("city-4");
-    var cityFive = localStorage.getItem("city-5");
-    var citiesArray = [cityOne, cityTwo, cityThree, cityFour, cityFive];
+    if (localStorage.getItem("searchedCities")) {
 
-    for (var i = 0; i < citiesArray.length; i++) {
-        // create buttons using localstorage values
-        if (citiesArray[i] === null) {
-        
+        var previousSearchCity = JSON.parse(localStorage.getItem("searchedCities"));
+
+        for (var i = 0; i < previousSearchCity.length; i++) {
+
+            // create btns
             var citySearch = document.createElement("button");
-            citySearch.textContent = localStorage.getItem("city-" + [i]);
+            citySearch.textContent = previousSearchCity[i];
             citySearch.classList = "btn btn-info btn-block";
-            citySearch.setAttribute("data-city", [i]);
+            citySearch.setAttribute("data-city", previousSearchCity[i]);
             citySearch.setAttribute("type", "submit");
-            citySearch.setAttribute("id", "city-" + [i]);
+            citySearch.setAttribute("id", "city-" + previousSearchCity[i]);
             searchHistoryDiv.prepend(citySearch);
-        } else if (cityOne === null || cityTwo === null || cityThree === null || cityFour === null || cityFive === null) {
-            return;
         }
+
+        localStorage.setItem("searchedCities", JSON.stringify(previousSearchCity));
+    };
+
+
+    for (i = 0; i < document.getElementsByClassName("btn").length; i++) {
+        document.getElementsByClassName("btn")[i].addEventListener('click', function () {
+            var btnClicked = this.getAttribute("data-city");
+            weatherRequest(btnClicked);
+            removePrevious();
+        })
     }
 };
 
@@ -218,7 +184,7 @@ function loadHistory() {
 var removePrevious = function () {
     cityNameEl.remove();
     uvIndexContainer.remove();
-    // forecastContainer.remove();
+    forecastContainer.innerHTML = "";
 };
 
 searchHandler.addEventListener("submit", searchEvent);
