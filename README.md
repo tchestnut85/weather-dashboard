@@ -5,18 +5,18 @@ This is a weather forecast dashboard app. Users are able to enter a city name in
 The UV index value will change color from green, yellow and red based on the severity of the UV index.
 Searched cities will be added below the search button and can be clicked on to display that cities weather data again.
 
-### Languages Used
+### Languages
 * Javascript
 * HTML
 * CSS
-* jQuery
 
 ### Open Weather Map Web APIs
 * Current Weather Data
 * UV Index 
 * One Call API
 
-### APIs
+### Frameworks and Libraries
+* jQuery
 * Bootstrap
 * Moment.js
 * Google Fonts
@@ -28,8 +28,10 @@ Searched cities will be added below the search button and can be clicked on to d
 
 ### Screenshot
 
-Example of a searched city's current weather conditions and its five day forecast.
+## Example of a searched city's current weather conditions and its five day forecast.
+
 <img src=./assets/images/screenshot-1.JPG/>
 
-Mobile display of current weather conditions and five day forecast.
+## Mobile display of current weather conditions and five day forecast.
+
 <img src=./assets/images/screenshot-2.JPG/>
