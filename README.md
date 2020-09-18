@@ -28,10 +28,10 @@ Searched cities will be added below the search button and can be clicked on to d
 
 ### Screenshots
 
-#### * Example of a searched city's current weather conditions and its five day forecast.
+* Example of a searched city's current weather conditions and its five day forecast.
 
 <img src=./assets/images/screenshot-1.JPG/>
 
-#### * Mobile display of current weather conditions and five day forecast.
+* Mobile display of current weather conditions and five day forecast.
 
 <img src=./assets/images/screenshot-2.JPG/>
