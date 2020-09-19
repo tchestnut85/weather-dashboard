@@ -16,8 +16,8 @@
 
 <body>
 
-    <header class="header">
-        <h1 class="heading display-4">Weather Dashboard</h1>
+    <header class="header bg-info">
+        <h1 class="heading display-4 text-light">Weather Dashboard</h1>
     </header>
 
     <main class="main-content container">
@@ -27,9 +27,12 @@
             <section id="search-wrapper" class="search-wrap-style card col-lg-3">
                 <!-- form for searching a city -->
                 <form id="search-form" class="text-center text-wrap">
-                    <label class="search-label" for="search-box" >Search for a City's Weather</label>
-                    <input type="text" id="search-bar" name="search-box" class="form-control text-input"/>
-                    <button type="submit" form="search-form" id="search-button" class="btn btn-secondary btn-block"><i class="fas fa-search"></i></button>
+                    <label class="search-label" for="search-box">Search by City</label>
+                    <input type="text" id="search-bar" name="search-box" class="form-control text-input" />
+                    <button type="submit" form="search-form" id="search-button" class="btn btn-primary btn-block"><i
+                            class="fas fa-search"></i></button>
+                    <button type="reset" form="search-form" id="dlt-btn" class="btn btn-danger btn-block"><i
+                            class="far fa-trash-alt"></i></button>
                 </form>
                 <div id="search-history" class="card-body">
                     <!-- save and display recent cities searched -->
@@ -43,7 +46,7 @@
                 <div id="current-result" class="current-style card-body border-secondary">
                     <!-- append current weather here -->
                 </div>
-                
+
                 <!-- 5 day forecast section -->
                 <section>
                     <!-- will need to make line 50 div a card, line 51 div a card-body and javascript created div a card-body-->
@@ -60,7 +63,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
         integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
         crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js" integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"
+        integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg=="
+        crossorigin="anonymous"></script>
     <script src="./assets/js/script.js"></script>
 </body>
 

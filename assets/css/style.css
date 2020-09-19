@@ -19,9 +19,9 @@
     font-family: var(--text-font);
 }
 
-.secondary-background {
+/* .secondary-background {
     background-color: var(--secondary)
-}
+} */
 
 .header {
     display: flex;

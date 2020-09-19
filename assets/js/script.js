@@ -2,9 +2,10 @@ var date = moment().format("ll");
 var searchHandler = document.querySelector("#search-form");
 var searchBar = document.querySelector("#search-bar");
 var responseContainer = document.querySelector("#current-result");
-var cityNameEl = document.createElement("span");
+var deleteBtn = document.getElementById("dlt-btn");
 
 // Current temperature variables
+var cityNameEl = document.createElement("span");
 var currentTempEl = document.createElement("span");
 var humidityEl = document.createElement("span");
 var windEl = document.createElement("span");
@@ -15,23 +16,26 @@ var uvValueDisplay = document.createElement("span");
 // 5 day forecast variables
 var forecastContainer = document.querySelector("#forecast-result");
 
-var searchWrapperEl = document.querySelector("#search-wrapper")
+var searchWrapperEl = document.querySelector("#search-wrapper");
 var searchHistoryDiv = document.querySelector("#search-history");
 var cityCount = 1;
-// var citiesArray = [cityOne, cityTwo, cityThree, cityFour, cityFive]
 
 // function to fetch weather api - city is received from searchEvent function as searchValue 
 var weatherRequest = function (city) {
+    if (!city) {
+        return;
+    };
     var weatherApi = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=c83c5006fffeb4aa44a34ffd6a27f135";
     // fetch the response
     fetch(weatherApi)
         .then(function (response) {
+            if (!response || !response.ok) {
+                throw new Error('There was an error');
+            };
             return response.json();
         })
         .then(function (response) {
-            // log the fetch response
             console.log(response);
-
             // create element for the city name response   
             cityNameEl.innerHTML = "<h2 class='secondary-text'>Current Weather for <span class='font-weight-bold'>" + response.name
                 + "</span></h2><br><img class='icon' src='http://openweathermap.org/img/w/" + response.weather[0].icon
@@ -39,7 +43,7 @@ var weatherRequest = function (city) {
             responseContainer.appendChild(cityNameEl);
 
             // create element to display the current temperature
-            currentTempEl.innerHTML = "<h3 class='secondary-text'>Current Temperature:<span class='font-weight-bold'>" + " " + response.main.temp + "&#176F</span></h3><br>";
+            currentTempEl.innerHTML = "<h3 class='secondary-text'>Current Temperature:<span class='font-weight-bold'>" + " " + Math.round(response.main.temp) + "&#176F</span></h3><br>";
             responseContainer.appendChild(currentTempEl);
 
             // create element to display humidity
@@ -47,8 +51,9 @@ var weatherRequest = function (city) {
             responseContainer.appendChild(humidityEl);
 
             // create element to display wind speed
-            windEl.innerHTML = "<h4 class='secondary-text'>Wind Speed:<span class='font-weight-bold'>" + " " + response.wind.speed + "MPH</span></h4>";
+            windEl.innerHTML = "<h4 class='secondary-text'>Wind Speed:<span class='font-weight-bold'>" + " " + Math.round(response.wind.speed) + " MPH</span></h4>";
             responseContainer.appendChild(windEl);
+
 
             // fetch UV Index
             return fetch("https://api.openweathermap.org/data/2.5/uvi?appid=c83c5006fffeb4aa44a34ffd6a27f135&lat=" + response.coord.lat + "&lon=" + response.coord.lon);
@@ -88,7 +93,7 @@ var weatherRequest = function (city) {
             // for loop to display 5 day forecast
             for (var i = 1; i < 6; i++) {
                 var forecastEl = document.createElement("div");
-                forecastEl.classList = "forecast-card card-body rounded-lg border-dark secondary-background";
+                forecastEl.classList = "forecast-card card-body rounded-lg border-dark bg-info text-light";
                 forecastContainer.appendChild(forecastEl);
 
                 // display date 
@@ -106,16 +111,22 @@ var weatherRequest = function (city) {
                 // display day temperature forecast
                 var tempDiv = document.createElement("div");
                 tempDiv.classList = "card-text secondary-text";
-                tempDiv.innerHTML = "<h6>Day Temp:<span class='font-weight-bold'>" + " " + forecastResponse.daily[i].temp.day + "&#176F</span></h6>" + "<h6>Night Temp:<span class='font-weight-bold'>" + " " + forecastResponse.daily[i].temp.night + " &#176F</span></h6>";
+                tempDiv.innerHTML = "<h6>Day Temp:<span>" + " " + Math.round(forecastResponse.daily[i].temp.day) + "&#176F</span></h6>" + "<h6>Night Temp:<span>" + " " + Math.round(forecastResponse.daily[i].temp.night) + " &#176F</span></h6>";
                 forecastEl.appendChild(tempDiv);
 
                 // display humidity forecast
                 var humidDiv = document.createElement("div");
                 humidDiv.classList = "card-text secondary-text";
-                humidDiv.innerHTML = "<h6>Humidity:<span class='font-weight-bold'>" + " " + forecastResponse.daily[i].humidity + "%</span></h6>";
+                humidDiv.innerHTML = "<h6>Humidity:<span>" + " " + forecastResponse.daily[i].humidity + "%</span></h6>";
                 forecastEl.appendChild(humidDiv);
             }
         })
+        .catch(function (error) {
+            removePrevious();
+            alert(error.message);
+            document.querySelector("#search-bar").value = "";
+            return;
+        });
 };
 
 var searchEvent = function (event) {
@@ -124,23 +135,47 @@ var searchEvent = function (event) {
     var searchValue = searchBar.value.trim().toUpperCase();
 
     if (searchValue) {
+        // Correct way to implement is to catch any errors happening from weatherRequest and skip createBtn/storeHistory
         weatherRequest(searchValue);
+        createBtn(searchValue);
+        storeHistory();
+        // document.querySelector("#search-bar").value = "";
     } else {
+
         //if search is empty, throw an alert. CHANGE TO A MODAL LATER
         alert("Please enter a city to see its current weather.");
+    };
+};
+
+function createBtn(city) {
+    // create btns
+    var citySearch = document.createElement("button");
+    citySearch.textContent = city;
+    citySearch.classList = "btn btn-info btn-block";
+    citySearch.setAttribute("data-city", city);
+    citySearch.setAttribute("type", "submit");
+    citySearch.setAttribute("id", "city-" + city);
+    searchHistoryDiv.prepend(citySearch);
+};
+
+function clearHistory() {
+    var searchedCities = JSON.parse(localStorage.getItem("searchedCities"));
+    for (var i = 0; i < searchedCities.length; i++) {
+        document.getElementById("city-" + searchedCities[i]).remove();
     }
-    storeHistory();
+    localStorage.clear("searchedCities");
 };
 
 function storeHistory() {
     // variables to store storage keys for if statements
-
     var userSearch = document.querySelector("#search-bar").value.trim().toUpperCase();
 
+    if (!userSearch) {
+        return;
+    };
+
     var previousSearchCity = JSON.parse(localStorage.getItem("searchedCities")) || [];
-
     previousSearchCity.push(userSearch);
-
     localStorage.setItem("searchedCities", JSON.stringify(previousSearchCity));
 
     // clear search bar after clicking search button
@@ -152,22 +187,10 @@ function storeHistory() {
 
 function loadHistory() {
     if (localStorage.getItem("searchedCities")) {
-
         var previousSearchCity = JSON.parse(localStorage.getItem("searchedCities"));
-
         for (var i = 0; i < previousSearchCity.length; i++) {
-
-            // create btns
-            var citySearch = document.createElement("button");
-            citySearch.textContent = previousSearchCity[i];
-            citySearch.classList = "btn btn-info btn-block";
-            citySearch.setAttribute("data-city", previousSearchCity[i]);
-            citySearch.setAttribute("type", "submit");
-            citySearch.setAttribute("id", "city-" + previousSearchCity[i]);
-            searchHistoryDiv.prepend(citySearch);
+            createBtn(previousSearchCity[i]);
         }
-
-        localStorage.setItem("searchedCities", JSON.stringify(previousSearchCity));
     };
 
 
@@ -175,8 +198,9 @@ function loadHistory() {
         document.getElementsByClassName("btn")[i].addEventListener('click', function () {
             var btnClicked = this.getAttribute("data-city");
             weatherRequest(btnClicked);
+            console.log(btnClicked);
             removePrevious();
-        })
+        });
     }
 };
 
@@ -185,8 +209,12 @@ var removePrevious = function () {
     cityNameEl.remove();
     uvIndexContainer.remove();
     forecastContainer.innerHTML = "";
+    currentTempEl.remove();
+    humidityEl.remove();
+    windEl.remove();
 };
 
 searchHandler.addEventListener("submit", searchEvent);
+deleteBtn.addEventListener("click", clearHistory);
 
 loadHistory();
