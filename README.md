@@ -10,10 +10,6 @@ Searched cities will be added below the search button and can be clicked on to d
 
 ![screenshot-1](./assets/images/screenshot-1.JPG)
 
-* Mobile display of current weather conditions and five day forecast.
-
-![screenshot-2](./assets/images/screenshot-2.JPG)
-
 ## Usage
 - Type in a city name in the search box and press the `enter` key or the search icon.
 - Current weather details and a 5-day forecast will be displayed for that city.
