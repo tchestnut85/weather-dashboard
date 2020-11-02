@@ -28,6 +28,7 @@
     background-color: var(--secondary);
     justify-content: center;
     text-align: center;
+    margin-bottom: 25px;
 }
 
 .heading {
@@ -54,7 +55,7 @@
     text-align: center;
     background-color: lightblue;
     margin-bottom: 8px;
-    border-radius: 5px;
+    border-radius: .25rem;
 }
 
 .icon {
@@ -62,8 +63,8 @@
     height: 100px;
 }
 
-.result-wrapper {
-    border: solid 2px;
+.results {
+    border: 0;
 }
 
 .uv-class {
@@ -79,6 +80,10 @@
     color: white;
 }
 
+.forecast-wrap {
+    border: 0;
+}
+
 .forecast-card {
     margin-right: 5px;
     text-align: center;
@@ -88,6 +93,7 @@
     display: flex;
     justify-content: space-between;
     background-color: lightblue;
+    border-radius: .25rem;
 }
 
 .forecast-icon {
@@ -119,6 +125,12 @@
 
     .forecast-card h6 {
         font-size: 1.25rem;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .search-wrap-style {
+        margin-bottom: 15px;
     }
 }
 
