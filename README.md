@@ -18,7 +18,6 @@ Searched cities will be added below the search button and can be clicked on to d
 
 ## Tech Used
 * [OpenWeather API](https://openweathermap.org/api)
-* jQuery
 * Javascript
 * HTML
 * CSS
