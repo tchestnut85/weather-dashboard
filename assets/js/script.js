@@ -5,13 +5,15 @@ var responseContainer = document.querySelector("#current-result");
 var deleteBtn = document.getElementById("dlt-btn");
 
 // Current temperature variables
-var cityNameEl = document.createElement("span");
-var currentTempEl = document.createElement("span");
-var humidityEl = document.createElement("span");
-var windEl = document.createElement("span");
+const cityTempDiv = document.createElement('div');
+const cityDetailsDiv = document.createElement('div');
+var cityNameEl = document.createElement("div");
+var currentTempEl = document.createElement("div");
+var humidityEl = document.createElement("div");
+var windEl = document.createElement("div");
 var uvIndexContainer = document.createElement("div");
 var uvIndexEl = document.createElement("h4");
-var uvValueDisplay = document.createElement("span");
+var uvValueDisplay = document.createElement("div");
 
 // 5 day forecast variables
 var forecastContainer = document.querySelector("#forecast-result");
@@ -35,24 +37,31 @@ var weatherRequest = function (city) {
             return response.json();
         })
         .then(function (response) {
-            console.log(response);
+            // div to contain city name and current temperature
+            cityTempDiv.classList = 'temp-div';
+            responseContainer.appendChild(cityTempDiv);
+
+            // div to contain other details - humidity, wind speed, UV index
+            cityDetailsDiv.classList = 'detail-div';
+            responseContainer.appendChild(cityDetailsDiv);
+
             // create element for the city name response   
             cityNameEl.innerHTML = "<h2 class='secondary-text'>Current Weather for <span class='font-weight-bold'>" + response.name
                 + "</span></h2><br><img class='icon' src='http://openweathermap.org/img/w/" + response.weather[0].icon
                 + ".png' alt=Current weather icon/><br><br><h2 class='font-weight-bold secondary-text'>" + date + "</h2><br>";
-            responseContainer.appendChild(cityNameEl);
+            cityTempDiv.appendChild(cityNameEl);
 
             // create element to display the current temperature
             currentTempEl.innerHTML = "<h3 class='secondary-text'>Current Temperature:<span class='font-weight-bold'>" + " " + Math.round(response.main.temp) + "&#176F</span></h3><br>";
-            responseContainer.appendChild(currentTempEl);
+            cityTempDiv.appendChild(currentTempEl);
 
             // create element to display humidity
-            humidityEl.innerHTML = "<h4 class='secondary-text'>Humidity:<span class='font-weight-bold'>" + " " + response.main.humidity + "%</span></h4><br>";
-            responseContainer.appendChild(humidityEl);
+            humidityEl.innerHTML = "<h4 class='secondary-text'>Humidity:<span class='font-weight-bold'>" + " " + response.main.humidity + "%</span></h4>";
+            cityDetailsDiv.appendChild(humidityEl);
 
             // create element to display wind speed
             windEl.innerHTML = "<h4 class='secondary-text'>Wind Speed:<span class='font-weight-bold'>" + " " + Math.round(response.wind.speed) + " MPH</span></h4>";
-            responseContainer.appendChild(windEl);
+            cityDetailsDiv.appendChild(windEl);
 
 
             // fetch UV Index
@@ -64,8 +73,8 @@ var weatherRequest = function (city) {
         .then(function (uvResponse) {
             // create div to contain UV index
             uvIndexContainer.setAttribute("id", "uv-value");
-            uvIndexContainer.classList = "secondary-text card-body uv-class";
-            responseContainer.appendChild(uvIndexContainer);
+            uvIndexContainer.classList = "secondary-text uv-class";
+            cityDetailsDiv.appendChild(uvIndexContainer);
 
             // set uvValue
             var uvValue = uvResponse.value;

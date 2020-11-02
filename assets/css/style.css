@@ -19,10 +19,6 @@
     font-family: var(--text-font);
 }
 
-/* .secondary-background {
-    background-color: var(--secondary)
-} */
-
 .header {
     display: flex;
     background-color: var(--secondary);
@@ -52,10 +48,19 @@
 }
 
 .current-style {
+    display: flex;
+    justify-content: space-between;
     text-align: center;
     background-color: lightblue;
     margin-bottom: 8px;
     border-radius: .25rem;
+}
+
+.detail-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .icon {
