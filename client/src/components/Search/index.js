@@ -1,19 +1,46 @@
 import React, { useEffect, useState } from 'react';
 
+import { Button } from '../Button';
+import { getCurrentWeather } from '../../utils/API';
+
 export const Search = () => {
 	// TODO - refactor to use Context or Redux
 	// TODO - implement localstorage setter and getter util functions
 
-	const [searchState, setSearchState] = useState('');
+	const [searchInput, setSearchInput] = useState('');
 
-	const handleChange = e => setSearchState(e.target.value);
+	const handleChange = e => setSearchInput(e.target.value);
 
-	const handleSubmit = () => {
+	const handleSubmit = async e => {
+		e.preventDefault();
+
 		try {
-			// TODO - make the fetch request to the weather API
+			if (searchInput === '') {
+				console.error('Please enter a city to search for.');
+				throw Error('Please enter a city to search for.');
+			}
+
+			const weatherResponse = await getCurrentWeather(
+				searchInput.trim().toLowerCase()
+			);
+
+			if (!weatherResponse.ok) {
+				console.error(
+					`There was an error: ${weatherResponse.statusText} (${weatherResponse.status})`
+				);
+				throw Error(
+					`There was an error: ${weatherResponse.statusText} (${weatherResponse.status})`
+				);
+			}
+
+			const weatherData = await weatherResponse.json();
+			console.log('weatherData:', weatherData);
+
+			setSearchInput('');
 		} catch (err) {
 			console.error(err);
 		}
+		setSearchInput('');
 	};
 
 	return (
@@ -26,7 +53,7 @@ export const Search = () => {
 				id='search-form'
 				className='text-center text-wrap'
 			>
-				<label htmlFor='search-box' class='search-label'>
+				<label htmlFor='search-box' className='search-label'>
 					Search by City
 				</label>
 				<input
@@ -34,24 +61,21 @@ export const Search = () => {
 					id='search-bar'
 					name='search-box'
 					className='form-control text-input'
+					value={searchInput}
 					onChange={handleChange}
 				/>
-				<button
+				<Button
 					type='submit'
-					form='search-form'
 					id='search-button'
-					className='btn btn-primary btn-block'
-				>
-					<i className='fas fa-search'></i>
-				</button>
-				<button
+					role='primary'
+					icon='fas fa-search'
+				/>
+				<Button
 					type='reset'
-					form='search-form'
 					id='dlt-btn'
-					className='btn btn-danger btn-block'
-				>
-					<i className='far fa-trash-alt'></i>
-				</button>{' '}
+					role='danger'
+					icon='far fa-trash-alt'
+				/>
 			</form>
 			<div id='search-history' className='card-body'>
 				{/* TODO - searches saved to localStorage will be populated here */}
