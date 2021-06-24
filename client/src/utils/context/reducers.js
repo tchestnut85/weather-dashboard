@@ -25,6 +25,16 @@ const reducer = (state, action) => {
 				...state,
 				currentWeather: null,
 			};
+		case SET_UV:
+			return {
+				...state,
+				uvIndex: action.payload,
+			};
+		case CLEAR_UV:
+			return {
+				...state,
+				uvIndex: null,
+			};
 		case SET_ERROR:
 			return {
 				...state,

@@ -1,10 +1,10 @@
 import React from 'react';
+import { WeatherUV } from '../WeatherUV';
 import { useWeatherContext } from '../../utils/context/WeatherState';
 
 export const WeatherCurrent = () => {
 	const [currentState, dispatch] = useWeatherContext();
 	const { currentWeather } = currentState;
-	console.log('currentWeather:', currentWeather);
 
 	// TODO - install dayjs to format the date given with the weather data
 	const date = new Date();
@@ -53,24 +53,29 @@ export const WeatherCurrent = () => {
 						</div>
 						<div className='detail-div'>
 							<div>
-								<h4 class='secondary-text'>
+								<h4 className='secondary-text'>
 									Humidity:{' '}
-									<span class='font-weight-bold'>
+									<span className='font-weight-bold'>
 										{`${currentWeather.main.humidity}%`}
 									</span>
 								</h4>
 							</div>
 							<div>
-								<h4 class='secondary-text'>
+								<h4 className='secondary-text'>
 									Wind Speed:{' '}
-									<span class='font-weight-bold'>
+									<span className='font-weight-bold'>
 										{`${Math.round(
 											currentWeather.wind.speed
 										)} MPH`}
 									</span>
 								</h4>
 							</div>
-							<div>{/* display the UV index here */}</div>
+							<div>
+								<WeatherUV
+									lat={currentWeather.coord.lat}
+									lon={currentWeather.coord.lon}
+								/>
+							</div>
 						</div>
 					</>
 				)}
