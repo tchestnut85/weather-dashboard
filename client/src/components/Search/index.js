@@ -1,22 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import {
+	CLEAR_CURRENT,
+	CLEAR_ERROR,
+	CLEAR_STORAGE,
+	SET_CURRENT,
+	SET_ERROR,
+	SET_STORAGE,
+} from '../../utils/context/actions';
+import React, { useState } from 'react';
 
 import { Button } from '../Button';
 import { getCurrentWeather } from '../../utils/API';
+import { useWeatherContext } from '../../utils/context/WeatherState';
 
 export const Search = () => {
-	// TODO - refactor to use Context or Redux
 	// TODO - implement localstorage setter and getter util functions
+	const [currentState, dispatch] = useWeatherContext();
+	console.log('currentState:', currentState);
 
 	const [searchInput, setSearchInput] = useState('');
+
+	const handleError = message => {
+		dispatch({ type: SET_ERROR, payload: message });
+		setTimeout(() => {
+			dispatch({ type: CLEAR_ERROR });
+		}, 3000);
+	};
 
 	const handleChange = e => setSearchInput(e.target.value);
 
 	const handleSubmit = async e => {
 		e.preventDefault();
-
+		dispatch({ type: CLEAR_CURRENT });
 		try {
 			if (searchInput === '') {
-				console.error('Please enter a city to search for.');
+				handleError('Please enter a city to search for.');
 				throw Error('Please enter a city to search for.');
 			}
 
@@ -25,9 +42,10 @@ export const Search = () => {
 			);
 
 			if (!weatherResponse.ok) {
-				console.error(
+				handleError(
 					`There was an error: ${weatherResponse.statusText} (${weatherResponse.status})`
 				);
+
 				throw Error(
 					`There was an error: ${weatherResponse.statusText} (${weatherResponse.status})`
 				);
@@ -35,6 +53,7 @@ export const Search = () => {
 
 			const weatherData = await weatherResponse.json();
 			console.log('weatherData:', weatherData);
+			dispatch({ type: SET_CURRENT, payload: weatherData });
 
 			setSearchInput('');
 		} catch (err) {
