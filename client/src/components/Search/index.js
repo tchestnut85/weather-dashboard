@@ -1,10 +1,8 @@
 import {
 	CLEAR_CURRENT,
 	CLEAR_ERROR,
-	CLEAR_STORAGE,
 	SET_CURRENT,
 	SET_ERROR,
-	SET_STORAGE,
 } from '../../utils/context/actions';
 import React, { useState } from 'react';
 
@@ -15,7 +13,6 @@ import { useWeatherContext } from '../../utils/context/WeatherState';
 export const Search = () => {
 	// TODO - implement localstorage setter and getter util functions
 	const [currentState, dispatch] = useWeatherContext();
-	console.log('currentState:', currentState);
 
 	const [searchInput, setSearchInput] = useState('');
 
@@ -52,7 +49,6 @@ export const Search = () => {
 			}
 
 			const weatherData = await weatherResponse.json();
-			console.log('weatherData:', weatherData);
 			dispatch({ type: SET_CURRENT, payload: weatherData });
 
 			setSearchInput('');
