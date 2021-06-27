@@ -4,15 +4,15 @@ import {
 	SET_FORECAST,
 } from '../../utils/context/actions';
 import React, { useEffect } from 'react';
+import { capitalizeWords, formatDate } from '../../utils/helpers';
 
-import { capitalizeWords } from '../../utils/helpers';
 import { getForecast } from '../../utils/API';
 import { useWeatherContext } from '../../utils/context/WeatherState';
 
 export const WeatherForecast = () => {
 	const [currentState, dispatch] = useWeatherContext();
+	console.log('currentState:', currentState);
 	const { forecast } = currentState;
-	console.log('forecast.js forecast:', forecast);
 	const coords = currentState?.currentWeather?.coord;
 
 	const handleError = message => {
@@ -65,7 +65,7 @@ export const WeatherForecast = () => {
 								>
 									<div className='secondary-text card-title'>
 										<h5 className='font-weight-bold'>
-											{day.dt}
+											{formatDate(day.dt)}
 										</h5>
 									</div>
 									<div>

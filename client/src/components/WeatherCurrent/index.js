@@ -1,17 +1,12 @@
+import { capitalizeWords, formatDate } from '../../utils/helpers';
+
 import React from 'react';
 import { WeatherUV } from '../WeatherUV';
-import { capitalizeWords } from '../../utils/helpers';
 import { useWeatherContext } from '../../utils/context/WeatherState';
 
 export const WeatherCurrent = () => {
 	const [currentState] = useWeatherContext();
 	const { currentWeather } = currentState;
-
-	// TODO - install dayjs to format the date given with the weather data
-	const date = new Date();
-	const dateFormatted = `${
-		date.getMonth() + 1
-	}/${date.getDate()}/${date.getFullYear()}`;
 
 	return (
 		<>
@@ -47,7 +42,7 @@ export const WeatherCurrent = () => {
 								<br />
 								<br />
 								<h2 className='font-weight-bold secondary-text'>
-									{dateFormatted}
+									{formatDate(currentWeather.dt)}
 								</h2>
 								<br />
 							</div>
@@ -62,6 +57,22 @@ export const WeatherCurrent = () => {
 							<br />
 						</div>
 						<div className='detail-div'>
+							<div>
+								<h4 className='secondary-text'>
+									Low Temp:{' '}
+									<span className='font-weight-bold'>{`${Math.round(
+										currentWeather.main.temp_min
+									)}°F`}</span>
+								</h4>
+							</div>
+							<div>
+								<h4 className='secondary-text'>
+									High Temp:{' '}
+									<span className='font-weight-bold'>{`${Math.round(
+										currentWeather.main.temp_max
+									)}°F`}</span>
+								</h4>
+							</div>
 							<div>
 								<h4 className='secondary-text'>
 									Humidity:{' '}
