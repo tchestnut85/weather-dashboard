@@ -12,7 +12,7 @@ import { useWeatherContext } from '../../utils/context/WeatherState';
 
 export const Search = () => {
 	// TODO - implement localstorage setter and getter util functions
-	const [currentState, dispatch] = useWeatherContext();
+	const [, dispatch] = useWeatherContext();
 
 	const [searchInput, setSearchInput] = useState('');
 

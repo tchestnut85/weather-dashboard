@@ -5,12 +5,14 @@ import {
 } from '../../utils/context/actions';
 import React, { useEffect } from 'react';
 
+import { capitalizeWords } from '../../utils/helpers';
 import { getForecast } from '../../utils/API';
 import { useWeatherContext } from '../../utils/context/WeatherState';
 
 export const WeatherForecast = () => {
 	const [currentState, dispatch] = useWeatherContext();
-	console.log('forecast.js currentState:', currentState);
+	const { forecast } = currentState;
+	console.log('forecast.js forecast:', forecast);
 	const coords = currentState?.currentWeather?.coord;
 
 	const handleError = message => {
@@ -43,7 +45,7 @@ export const WeatherForecast = () => {
 
 	// Invote the getForecastData function when currentState updates
 	useEffect(() => {
-		getForecastData();
+		if (currentState.currentWeather) getForecastData();
 		// eslint-disable-next-line
 	}, [currentState.currentWeather]);
 
@@ -54,7 +56,59 @@ export const WeatherForecast = () => {
 					id='forecast-result'
 					className='forecast-class card-body border-secondary'
 				>
-					{}
+					{forecast &&
+						forecast.daily
+							.map(day => (
+								<div
+									className='forecast-card card-body rounded-lg border-dark bg-info text-light'
+									key={day.dt}
+								>
+									<div className='secondary-text card-title'>
+										<h5 className='font-weight-bold'>
+											{day.dt}
+										</h5>
+									</div>
+									<div>
+										<figure>
+											<img
+												className='forecast-icon'
+												src={`http://openweathermap.org/img/w/${day.weather[0].icon}.png`}
+												alt={capitalizeWords(
+													day.weather[0].description
+												)}
+											/>
+											<figcaption className='secondary-text'>
+												{capitalizeWords(
+													day.weather[0].description
+												)}
+											</figcaption>
+										</figure>
+									</div>
+									<div className='card-text secondary-text'>
+										<h6>
+											Low:{' '}
+											<span>{`${Math.round(
+												day.temp.min
+											)}°F`}</span>
+										</h6>
+										<h6>
+											High:{' '}
+											<span>{`${Math.round(
+												day.temp.max
+											)}°F`}</span>
+										</h6>
+									</div>
+									<div className='card-text secondary-text'>
+										<h6>
+											Humidity:{' '}
+											<span>{`${Math.round(
+												day.humidity
+											)}%`}</span>
+										</h6>
+									</div>
+								</div>
+							))
+							.filter((day, i) => i >= 1 && i <= 5)}
 				</div>
 			</div>
 		</section>
