@@ -1,9 +1,10 @@
 import React from 'react';
 import { WeatherUV } from '../WeatherUV';
+import { capitalizeWords } from '../../utils/helpers';
 import { useWeatherContext } from '../../utils/context/WeatherState';
 
 export const WeatherCurrent = () => {
-	const [currentState, dispatch] = useWeatherContext();
+	const [currentState] = useWeatherContext();
 	const { currentWeather } = currentState;
 
 	// TODO - install dayjs to format the date given with the weather data
@@ -13,7 +14,7 @@ export const WeatherCurrent = () => {
 	}/${date.getDate()}/${date.getFullYear()}`;
 
 	return (
-		<section id='result-wrapper' className='results col-lg-9 card'>
+		<>
 			<div
 				id='current-result'
 				className='current-style card-body border-secondary'
@@ -29,11 +30,20 @@ export const WeatherCurrent = () => {
 									</span>
 								</h2>
 								<br />
-								<img
-									className='icon'
-									src={`http://openweathermap.org/img/w/${currentWeather.weather[0].icon}.png`}
-									alt='Current weather icon'
-								/>
+								<figure>
+									<img
+										className='icon'
+										src={`http://openweathermap.org/img/w/${currentWeather.weather[0].icon}.png`}
+										alt={`Current weather icon for ${currentWeather.weather[0].description}`}
+									/>
+									<figcaption className='secondary-text'>
+										Current Condition:{' '}
+										{capitalizeWords(
+											currentWeather.weather[0]
+												.description
+										)}
+									</figcaption>
+								</figure>
 								<br />
 								<br />
 								<h2 className='font-weight-bold secondary-text'>
@@ -81,6 +91,6 @@ export const WeatherCurrent = () => {
 				)}
 			</div>
 			{/* Forecast Section here */}
-		</section>
+		</>
 	);
 };

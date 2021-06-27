@@ -1,5 +1,5 @@
 import {
-	CLEAR_CURRENT,
+	CLEAR_DATA,
 	CLEAR_ERROR,
 	SET_CURRENT,
 	SET_ERROR,
@@ -27,7 +27,7 @@ export const Search = () => {
 
 	const handleSubmit = async e => {
 		e.preventDefault();
-		dispatch({ type: CLEAR_CURRENT });
+		dispatch({ type: CLEAR_DATA });
 		try {
 			if (searchInput === '') {
 				handleError('Please enter a city to search for.');

@@ -1,9 +1,7 @@
 import {
-	CLEAR_CURRENT,
+	CLEAR_DATA,
 	CLEAR_ERROR,
-	CLEAR_FORECAST,
 	CLEAR_STORAGE,
-	CLEAR_UV,
 	SET_CURRENT,
 	SET_ERROR,
 	SET_FORECAST,
@@ -20,20 +18,22 @@ const reducer = (state, action) => {
 				...state,
 				currentWeather: action.payload,
 			};
-		case CLEAR_CURRENT:
-			return {
-				...state,
-				currentWeather: null,
-			};
 		case SET_UV:
 			return {
 				...state,
 				uvIndex: action.payload,
 			};
-		case CLEAR_UV:
+		case SET_FORECAST:
 			return {
 				...state,
+				forecast: action.payload,
+			};
+		case CLEAR_DATA:
+			return {
+				...state,
+				currentWeather: null,
 				uvIndex: null,
+				forecast: null,
 			};
 		case SET_ERROR:
 			return {
