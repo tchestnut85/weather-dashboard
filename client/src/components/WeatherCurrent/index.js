@@ -1,19 +1,15 @@
+import { capitalizeWords, formatDate } from '../../utils/helpers';
+
 import React from 'react';
 import { WeatherUV } from '../WeatherUV';
 import { useWeatherContext } from '../../utils/context/WeatherState';
 
 export const WeatherCurrent = () => {
-	const [currentState, dispatch] = useWeatherContext();
+	const [currentState] = useWeatherContext();
 	const { currentWeather } = currentState;
 
-	// TODO - install dayjs to format the date given with the weather data
-	const date = new Date();
-	const dateFormatted = `${
-		date.getMonth() + 1
-	}/${date.getDate()}/${date.getFullYear()}`;
-
 	return (
-		<section id='result-wrapper' className='results col-lg-9 card'>
+		<>
 			<div
 				id='current-result'
 				className='current-style card-body border-secondary'
@@ -29,15 +25,24 @@ export const WeatherCurrent = () => {
 									</span>
 								</h2>
 								<br />
-								<img
-									className='icon'
-									src={`http://openweathermap.org/img/w/${currentWeather.weather[0].icon}.png`}
-									alt='Current weather icon'
-								/>
+								<figure>
+									<img
+										className='icon'
+										src={`http://openweathermap.org/img/w/${currentWeather.weather[0].icon}.png`}
+										alt={`Current weather icon for ${currentWeather.weather[0].description}`}
+									/>
+									<figcaption className='secondary-text'>
+										Current Condition:{' '}
+										{capitalizeWords(
+											currentWeather.weather[0]
+												.description
+										)}
+									</figcaption>
+								</figure>
 								<br />
 								<br />
 								<h2 className='font-weight-bold secondary-text'>
-									{dateFormatted}
+									{formatDate(currentWeather.dt)}
 								</h2>
 								<br />
 							</div>
@@ -52,6 +57,22 @@ export const WeatherCurrent = () => {
 							<br />
 						</div>
 						<div className='detail-div'>
+							<div>
+								<h4 className='secondary-text'>
+									Low Temp:{' '}
+									<span className='font-weight-bold'>{`${Math.round(
+										currentWeather.main.temp_min
+									)}°F`}</span>
+								</h4>
+							</div>
+							<div>
+								<h4 className='secondary-text'>
+									High Temp:{' '}
+									<span className='font-weight-bold'>{`${Math.round(
+										currentWeather.main.temp_max
+									)}°F`}</span>
+								</h4>
+							</div>
 							<div>
 								<h4 className='secondary-text'>
 									Humidity:{' '}
@@ -81,6 +102,6 @@ export const WeatherCurrent = () => {
 				)}
 			</div>
 			{/* Forecast Section here */}
-		</section>
+		</>
 	);
 };

@@ -1,5 +1,5 @@
 import {
-	CLEAR_CURRENT,
+	CLEAR_DATA,
 	CLEAR_ERROR,
 	SET_CURRENT,
 	SET_ERROR,
@@ -12,7 +12,7 @@ import { useWeatherContext } from '../../utils/context/WeatherState';
 
 export const Search = () => {
 	// TODO - implement localstorage setter and getter util functions
-	const [currentState, dispatch] = useWeatherContext();
+	const [, dispatch] = useWeatherContext();
 
 	const [searchInput, setSearchInput] = useState('');
 
@@ -27,7 +27,7 @@ export const Search = () => {
 
 	const handleSubmit = async e => {
 		e.preventDefault();
-		dispatch({ type: CLEAR_CURRENT });
+		dispatch({ type: CLEAR_DATA });
 		try {
 			if (searchInput === '') {
 				handleError('Please enter a city to search for.');
