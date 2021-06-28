@@ -32,6 +32,7 @@ export const Search = () => {
 	const handleSubmit = async e => {
 		e.preventDefault();
 		dispatch({ type: CLEAR_DATA });
+
 		try {
 			if (searchInput === '') {
 				handleError('Please enter a city to search for.');
@@ -62,9 +63,43 @@ export const Search = () => {
 		setSearchInput('');
 	};
 
+	const handleSavedSearch = async e => {
+		const city = e.target.textContent;
+		dispatch({ type: CLEAR_DATA });
+
+		try {
+			if (city === '') {
+				handleError('Please enter a city to search for.');
+				throw Error('Please enter a city to search for.');
+			}
+
+			const weatherResponse = await getCurrentWeather(
+				city.trim().toLowerCase()
+			);
+
+			if (!weatherResponse.ok) {
+				handleError(
+					`There was an error: ${weatherResponse.statusText} (${weatherResponse.status})`
+				);
+
+				throw Error(
+					`There was an error: ${weatherResponse.statusText} (${weatherResponse.status})`
+				);
+			}
+
+			const weatherData = await weatherResponse.json();
+			dispatch({ type: SET_CURRENT, payload: weatherData });
+			setSearchInput('');
+		} catch (err) {
+			console.error(err);
+		}
+		setSearchInput('');
+	};
+
 	// On page load, check for saved searches in localstorage and load them into the Context state and the search box
 	useEffect(() => {
 		dispatch({ type: LOAD_STORAGE });
+		// eslint-disable-next-line
 	}, []);
 
 	// Delete saved items from localstorage, Context state and the search box
@@ -113,6 +148,7 @@ export const Search = () => {
 							<button
 								className='btn btn-info btn-block'
 								key={city}
+								onClick={handleSavedSearch}
 							>
 								{capitalizeFirstLetter(city)}
 							</button>
