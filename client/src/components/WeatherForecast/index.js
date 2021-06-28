@@ -11,7 +11,6 @@ import { useWeatherContext } from '../../utils/context/WeatherState';
 
 export const WeatherForecast = () => {
 	const [currentState, dispatch] = useWeatherContext();
-	console.log('currentState:', currentState);
 	const { forecast } = currentState;
 	const coords = currentState?.currentWeather?.coord;
 

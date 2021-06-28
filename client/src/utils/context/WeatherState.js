@@ -11,6 +11,7 @@ const WeatherProvider = ({ value = [], ...props }) => {
 		currentWeather: null,
 		uvIndex: null,
 		forecast: null,
+		savedSearches: [],
 		error: null,
 	});
 

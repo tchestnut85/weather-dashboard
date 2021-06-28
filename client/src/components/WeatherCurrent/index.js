@@ -25,6 +25,19 @@ export const WeatherCurrent = () => {
 									</span>
 								</h2>
 								<br />
+								<h3 className='font-weight-bold secondary-text'>
+									{formatDate(currentWeather.dt)}
+								</h3>
+								<br />
+								<h3 className='secondary-text'>
+									Temperature:{' '}
+									<span className='font-weight-bold'>
+										{`${Math.round(
+											currentWeather.main.temp
+										)}°F`}
+									</span>
+								</h3>
+								<br />
 								<figure>
 									<img
 										className='icon'
@@ -32,28 +45,14 @@ export const WeatherCurrent = () => {
 										alt={`Current weather icon for ${currentWeather.weather[0].description}`}
 									/>
 									<figcaption className='secondary-text'>
-										Current Condition:{' '}
+										Conditions:{' '}
 										{capitalizeWords(
 											currentWeather.weather[0]
 												.description
 										)}
 									</figcaption>
 								</figure>
-								<br />
-								<br />
-								<h2 className='font-weight-bold secondary-text'>
-									{formatDate(currentWeather.dt)}
-								</h2>
-								<br />
 							</div>
-							<h3 className='secondary-text'>
-								Current Temperature:{' '}
-								<span className='font-weight-bold'>
-									{`${Math.round(
-										currentWeather.main.temp
-									)}°F`}
-								</span>
-							</h3>
 							<br />
 						</div>
 						<div className='detail-div'>

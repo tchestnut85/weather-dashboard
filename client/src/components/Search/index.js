@@ -1,18 +1,22 @@
 import {
 	CLEAR_DATA,
 	CLEAR_ERROR,
+	CLEAR_STORAGE,
+	LOAD_STORAGE,
 	SET_CURRENT,
 	SET_ERROR,
+	SET_STORAGE,
 } from '../../utils/context/actions';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Button } from '../Button';
+import { capitalizeFirstLetter } from '../../utils/helpers';
 import { getCurrentWeather } from '../../utils/API';
 import { useWeatherContext } from '../../utils/context/WeatherState';
 
 export const Search = () => {
-	// TODO - implement localstorage setter and getter util functions
-	const [, dispatch] = useWeatherContext();
+	const [state, dispatch] = useWeatherContext();
+	const savedCities = state.savedSearches;
 
 	const [searchInput, setSearchInput] = useState('');
 
@@ -28,6 +32,7 @@ export const Search = () => {
 	const handleSubmit = async e => {
 		e.preventDefault();
 		dispatch({ type: CLEAR_DATA });
+
 		try {
 			if (searchInput === '') {
 				handleError('Please enter a city to search for.');
@@ -47,15 +52,59 @@ export const Search = () => {
 					`There was an error: ${weatherResponse.statusText} (${weatherResponse.status})`
 				);
 			}
+			dispatch({ type: SET_STORAGE, payload: searchInput });
 
 			const weatherData = await weatherResponse.json();
 			dispatch({ type: SET_CURRENT, payload: weatherData });
-
 			setSearchInput('');
 		} catch (err) {
 			console.error(err);
 		}
 		setSearchInput('');
+	};
+
+	const handleSavedSearch = async e => {
+		const city = e.target.textContent;
+		dispatch({ type: CLEAR_DATA });
+
+		try {
+			if (city === '') {
+				handleError('Please enter a city to search for.');
+				throw Error('Please enter a city to search for.');
+			}
+
+			const weatherResponse = await getCurrentWeather(
+				city.trim().toLowerCase()
+			);
+
+			if (!weatherResponse.ok) {
+				handleError(
+					`There was an error: ${weatherResponse.statusText} (${weatherResponse.status})`
+				);
+
+				throw Error(
+					`There was an error: ${weatherResponse.statusText} (${weatherResponse.status})`
+				);
+			}
+
+			const weatherData = await weatherResponse.json();
+			dispatch({ type: SET_CURRENT, payload: weatherData });
+			setSearchInput('');
+		} catch (err) {
+			console.error(err);
+		}
+		setSearchInput('');
+	};
+
+	// On page load, check for saved searches in localstorage and load them into the Context state and the search box
+	useEffect(() => {
+		dispatch({ type: LOAD_STORAGE });
+		// eslint-disable-next-line
+	}, []);
+
+	// Delete saved items from localstorage, Context state and the search box
+	const clearSavedCities = () => {
+		dispatch({ type: CLEAR_STORAGE });
 	};
 
 	return (
@@ -90,10 +139,21 @@ export const Search = () => {
 					id='dlt-btn'
 					role='danger'
 					icon='far fa-trash-alt'
+					clearSavedCities={clearSavedCities}
 				/>
 			</form>
 			<div id='search-history' className='card-body'>
-				{/* TODO - searches saved to localStorage will be populated here */}
+				{savedCities.length
+					? savedCities.map(city => (
+							<button
+								className='btn btn-info btn-block'
+								key={city}
+								onClick={handleSavedSearch}
+							>
+								{capitalizeFirstLetter(city)}
+							</button>
+					  ))
+					: null}
 			</div>
 		</section>
 	);
