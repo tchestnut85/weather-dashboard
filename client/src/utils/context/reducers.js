@@ -2,12 +2,14 @@ import {
 	CLEAR_DATA,
 	CLEAR_ERROR,
 	CLEAR_STORAGE,
+	LOAD_STORAGE,
 	SET_CURRENT,
 	SET_ERROR,
 	SET_FORECAST,
 	SET_STORAGE,
 	SET_UV,
 } from './actions';
+import { clearSearch, getSavedSearches, saveSearch } from '../localStorage';
 
 import { useReducer } from 'react';
 
@@ -34,6 +36,24 @@ const reducer = (state, action) => {
 				currentWeather: null,
 				uvIndex: null,
 				forecast: null,
+			};
+		case LOAD_STORAGE:
+			const savedCities = getSavedSearches();
+			return {
+				...state,
+				savedSearches: [...savedCities],
+			};
+		case SET_STORAGE:
+			saveSearch(state.savedSearches, action.payload);
+			return {
+				...state,
+				savedSearches: [action.payload, ...state.savedSearches],
+			};
+		case CLEAR_STORAGE:
+			clearSearch();
+			return {
+				...state,
+				savedSearches: [],
 			};
 		case SET_ERROR:
 			return {
